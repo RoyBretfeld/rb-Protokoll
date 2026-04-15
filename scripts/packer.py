@@ -97,6 +97,11 @@ def main():
     dump_dir = repo_root / "_rb_dumps"
     dump_dir.mkdir(exist_ok=True)
     
+    # Delete old dumps before creating new one
+    for old_dump in dump_dir.glob("*_DUMP_*.md"):
+        old_dump.unlink()
+        print(f"\U0001f5d1 Deleted old dump: {old_dump.name}")
+    
     output_file = dump_dir / f"{repo_root.name}_DUMP_{timestamp}.md"
     
     # Get custom include dirs from environment
