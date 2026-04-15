@@ -97,7 +97,7 @@ def main():
     dump_dir = repo_root / "_rb_dumps"
     dump_dir.mkdir(exist_ok=True)
     
-    output_file = dump_dir / f"PROJECT_CONTEXT_DUMP_{timestamp}.md"
+    output_file = dump_dir / f"{repo_root.name}_DUMP_{timestamp}.md"
     
     # Get custom include dirs from environment
     custom_includes = os.environ.get("RB_PACK_INCLUDE", "")

@@ -17,7 +17,7 @@ from typing import Set, Optional
 # Files that must NEVER be committed
 BLOCK_FILES = [
     r"^\.env$", r"\.pem$", r"\.key$", r"\.sqlite$", r"\.db$", 
-    r"traffic\.db", r"PROJECT_CONTEXT_DUMP", r".*\.dump$", r".*\.tar\.gz$"
+    r"traffic\.db", r"_DUMP_.*\.md", r".*\.dump$", r".*\.tar\.gz$"
 ]
 
 # Patterns causing immediate failure if found in code
