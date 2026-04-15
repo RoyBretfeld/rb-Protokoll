@@ -146,11 +146,12 @@ def main():
         sys.exit(run("python scripts/packer.py"))
 
     if a.cmd == "learn":
-        template_file = Path(r"E:\_____1111____Projekte-Programmierung\Antigravity\03_ERROR_DB.md")
+        template_file = Path("docs/_rb/03_ERROR_DB.md")
         if not template_file.exists():
-            print(f"❌ ERROR: Central Error-DB not found at {template_file}!", file=sys.stderr)
+            print(f"❌ ERROR: Error-DB not found at {template_file}!", file=sys.stderr)
+            print("💡 Create it at docs/_rb/03_ERROR_DB.md", file=sys.stderr)
             sys.exit(1)
-        
+
         print("📝 Create a new Error-DB entry:")
         print(f"   Edit: {template_file}")
         print("\nTemplate:")
