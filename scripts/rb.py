@@ -13,6 +13,29 @@ def has_placeholder(cmd: str) -> bool:
     """Check if command still contains {{PLACEHOLDER}}."""
     return bool(re.search(r'\{\{[^}]+\}\}', cmd))
 
+def parse_system_facts() -> dict[str, str]:
+    """Parse key-value pairs from docs/_rb/02_SYSTEM_FACTS.md.
+
+    Reads lines matching '- Key: value' and returns them as a dict.
+    Lines where value starts with '<!--' (HTML comments) are skipped.
+    """
+    facts_file = Path("docs/_rb/02_SYSTEM_FACTS.md")
+    if not facts_file.exists():
+        return {}
+
+    content = facts_file.read_text(encoding="utf-8")
+    facts: dict[str, str] = {}
+
+    for line in content.splitlines():
+        m = re.match(r'^-\s+([^:]+):\s*(.+)$', line.strip())
+        if m:
+            key = m.group(1).strip()
+            value = m.group(2).strip()
+            if value and not value.startswith('<!--'):
+                facts[key] = value
+
+    return facts
+
 def run(cmd: str, allow_placeholder: bool = False) -> int:
     """Execute shell command with validation."""
     if not allow_placeholder and has_placeholder(cmd):
@@ -94,10 +117,11 @@ def main():
         if run("python scripts/pre_commit_police.py") != 0:
             sys.exit(1)
         
-        # Baseline tests (may have placeholders)
-        baseline_cmd = "{{BASELINE_TEST_CMD}}"
-        if has_placeholder(baseline_cmd):
-            print("⚠️  No baseline tests configured (BASELINE_TEST_CMD not set)")
+        # Baseline tests (parsed from SYSTEM_FACTS)
+        facts = parse_system_facts()
+        baseline_cmd = facts.get("Baseline", "")
+        if not baseline_cmd or has_placeholder(baseline_cmd):
+            print("⚠️  No baseline tests configured (Baseline not set in SYSTEM_FACTS)")
             print("✅ Police check passed - assuming OK")
             sys.exit(0)
         
@@ -109,7 +133,12 @@ def main():
 
     if a.cmd == "test":
         print("🧪 Running full test suite...\n")
-        test_cmd = "{{FULL_TEST_CMD}}"
+        facts = parse_system_facts()
+        test_cmd = facts.get("Full tests", "")
+        if not test_cmd or has_placeholder(test_cmd):
+            print("❌ ERROR: Full tests command not configured in SYSTEM_FACTS", file=sys.stderr)
+            print("💡 Set 'Full tests:' in docs/_rb/02_SYSTEM_FACTS.md", file=sys.stderr)
+            sys.exit(1)
         sys.exit(run(test_cmd))
 
     if a.cmd == "pack":
