@@ -82,4 +82,4 @@ Copyright (c) 2026 Roy Bretfeld.
 
 **Roy Bretfeld**  
 KI-Beratung & Prozessautomatisierung  
-Website: [rb-automation-dresden.de](https://rb-automation-dresden.de)
+Website: [rh-automation-dresden.de](https://rh-automation-dresden.de)
