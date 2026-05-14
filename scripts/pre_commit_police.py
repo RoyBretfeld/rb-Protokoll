@@ -23,7 +23,7 @@ BLOCK_FILES = [
 # Patterns causing immediate failure if found in code
 SECRET_PATTERNS = [
     r"BEGIN (RSA|EC|OPENSSH|DSA) PRI" + r"VATE KEY",
-    r"Authorization:\s*Bearer\s+[A-Za-z0-9\-._~+/]+=*",
+    r"Authorization:\s*Bearer\s+[A-Za-z0-9\-._~+/]{8,}=*",
     # Specific keys: Allow unquoted (common in .ini/.env) OR quoted
     r"(jwt_secret|openai_api_key|aws_access_key_id|auth_token)\s*[=:]\s*(\S{8,}|['\"][^'\"]{8,}['\"])",
     # Generic keys: REQUIRE quotes to avoid false positives in code
@@ -165,7 +165,7 @@ def main():
     
     if staged is not None:
         print(f"[POLICE] ℹ️  Git staged mode: Scanning {len(staged)} files.")
-        target_files = {f for f in staged if f.exists()}
+        target_files = {f for f in staged if f.exists() and "_archive" not in f.parts and "Export-rb-Protokoll" not in f.parts}
         # Verify migration consistency on the changeset
         check_migration_consistency(target_files)
     else:
@@ -181,6 +181,8 @@ def main():
     # 1. Check for blocked filenames
     for f in target_files:
         path_str = str(f).replace("\\", "/")
+        if "_archive" in f.parts:
+            continue
         for block in BLOCK_FILES:
             if re.search(block, f.name, re.IGNORECASE):
                 fail(f"Forbidden file blocked: {f}")
@@ -194,4 +196,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

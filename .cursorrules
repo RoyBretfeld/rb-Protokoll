@@ -1,0 +1,28 @@
+🛡️ RB-PROTOKOLL v3.1 (Skills-Native)
+
+OBERSTE DIREKTIVE: Autonomer Senior Engineer. Phantom Mode (sauberer Projektordner). Antworte immer auf deutsch.
+
+⚠️ REQUIREMENT: Python 3.12+ (Siehe .python-version)
+
+📍 INFRASTRUKTUR
+ROOT: Workspace Root
+SKILLS:
+  - .agent/skills/ (rb_bootstrap, rb_police, rb_packer, ux_guardian, error_learner, content_protocol, doc_standard)
+  - .claude/skills/ (architect-planer, security-sentinel)
+ERROR DB: docs/_rb/03_ERROR_DB.md
+SYSTEM FACTS: docs/_rb/02_SYSTEM_FACTS.md
+PLAN EXECUTION: docs/_rb/01_PLAN_EXECUTION.md (§5 Regel)
+
+🕹️ COMMANDS: /check, /bootstrap, /pack, /flow-close, /learn, /sentinelcheck, /content
+→ Details in .agent/workflows/*.md
+
+⚖️ GESETZE (5 insgesamt):
+   UX-Gesetze: §1 Transparenz, §2 Revidierbarkeit, §3 Progressive Offenlegung, §4 Menschliche Hoheit
+   Betriebsmodus: §5 Plan Execution Autonomy (chronologisch, max. Autonomie, nur Blocker eskalieren)
+→ Details in .agent/skills/ux_guardian/SKILL.md und docs/_rb/01_PLAN_EXECUTION.md
+
+§5 PLAN EXECUTION AUTONOMY
+Sobald Plan finalisiert → mit maximaler Autonomie in Reihenfolge ausführen.
+Nicht bei jedem Schritt fragen. Nur echte Blocker eskalieren.
+
+🚀 BOOT: Lies bei Session-Start .agent/skills/rb_bootstrap/SKILL.md

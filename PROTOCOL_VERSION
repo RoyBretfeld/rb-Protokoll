@@ -1,0 +1,13 @@
+3.3.0
+# RB-Protokoll Version File
+# Format: MAJOR.MINOR.PATCH
+# MAJOR = Breaking change (neue Pflicht-Dateien, neue Phasen)
+# MINOR = New feature (neuer Skill, neue Workflow-Regel)
+# PATCH = Bugfix (Script-Fix, Typo, Encoding-Fix)
+#
+# Changelog:
+# 3.3.0 (2026-04-13) — MAR-Gate (PHASE 4b), hard_fail.py §5 Runtime-Enforcer,
+#                       pre_commit_police.py v2.0 (Mock-Scan), Windows UTF-8 Fix
+# 3.2.0 (2026-04-02) — GSD-Phasen + vollständige docs/_rb
+# 3.1.0 (2026-03-14) — §6 Plan Execution Autonomy, Content-Protokoll
+# 3.0.0 (2026-02-19) — Skills-Native, Sentinel, Bootstrap-Heilung

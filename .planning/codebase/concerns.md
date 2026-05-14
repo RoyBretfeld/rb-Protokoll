@@ -3,7 +3,15 @@ _Updated: 2026-04-15_
 
 ## CRITICAL
 
-_Keine kritischen Punkte offen._
+### C1 — `rb check` prüft SYSTEM_FACTS nicht
+- `check_system_facts()` wird nur von `rb init` aufgerufen, nicht von `rb check`.
+- Police (`pre_commit_police.py`) hat keinen SYSTEM_FACTS-Check.
+- **Risiko:** Commits durchs Gate, obwohl System-Fakten unvollständig → MAP/SPEC auf Sand gebaut.
+
+### C2 — Platzhalter erzeugen WARNING statt HARD-FAIL
+- `check_system_facts()` findet `{{PLACEHOLDER}}` aber gibt `True` zurück.
+- Protokoll fordert: ungelöste Platzhalter = sofortiger Stopp.
+- **Risiko:** Agent arbeitet weiter mit unvollständiger Basis.
 
 ## HIGH
 
@@ -24,14 +32,3 @@ _Keine kritischen Punkte offen._
 
 ### L2 — Kein Typecheck auf Windows-Pfade
 - `pre_commit_police.py` nutzt `Path.rglob()` — funktioniert, aber Pfad-Vergleiche in `check_migration_consistency()` nutzen manuelles `replace("\\", "/")`.
-
-## RESOLVED
-
-### C1 — `rb check` prüft SYSTEM_FACTS nicht ✅
-- **Behoben:** 2026-04-15 (Slice 1 + Slice 4)
-- `check_system_facts()` wird jetzt von `rb check` aufgerufen.
-- `pre_commit_police.py` prüft Existenz und Platzhalter-Freiheit.
-
-### C2 — Platzhalter erzeugen WARNING statt HARD-FAIL ✅
-- **Behoben:** 2026-04-15 (Slice 1)
-- `check_system_facts()` gibt `False` zurück und löst Exit 1 aus.

@@ -4,7 +4,6 @@ RB-Framework CLI (v2.0)
 Unified command interface for check/test/pack/learn
 """
 import argparse
-import os
 import subprocess
 import sys
 import re
@@ -68,7 +67,7 @@ def check_system_facts() -> bool:
     if unfilled:
         print(f"❌ HARD-FAIL: {len(unfilled)} unresolved placeholder(s) in SYSTEM_FACTS:", file=sys.stderr)
         for placeholder in unfilled[:5]:  # Show first 5
-            print(f"   - {{{{ {placeholder} }}}}", file=sys.stderr)
+            print(f"   - {{{{ {placeholder} }}}}-", file=sys.stderr)
         if len(unfilled) > 5:
             print(f"   ... and {len(unfilled) - 5} more", file=sys.stderr)
         print("\n💡 Fill placeholders in docs/_rb/02_SYSTEM_FACTS.md before proceeding.\n", file=sys.stderr)
@@ -147,26 +146,22 @@ def main():
         sys.exit(run("python scripts/packer.py"))
 
     if a.cmd == "learn":
-        error_db = Path(os.environ.get(
-            "RB_ERROR_DB_PATH",
-            r"E:\_____1111____Projekte-Programmierung\Antigravity\03_ERROR_DB.md"
-        ))
-        if not error_db.exists():
-            print(f"❌ ERROR: Error-DB nicht gefunden: {error_db}", file=sys.stderr)
-            print("💡 Laufwerk E: eingebunden? Oder RB_ERROR_DB_PATH setzen.", file=sys.stderr)
+        template_file = Path("docs/_rb/03_ERROR_DB.md")
+        if not template_file.exists():
+            print(f"❌ ERROR: Error-DB not found at {template_file}!", file=sys.stderr)
+            print("💡 Create it at docs/_rb/03_ERROR_DB.md", file=sys.stderr)
             sys.exit(1)
 
-        print("📝 Neuer Error-DB Eintrag:")
-        print(f"   Bearbeite: {error_db}")
+        print("📝 Create a new Error-DB entry:")
+        print(f"   Edit: {template_file}")
         print("\nTemplate:")
         print("- ID: ERR-YYYYMMDD-SHORT")
-        print("- Symptom: Was war sichtbar?")
-        print("- Root Cause: Was war die eigentliche Ursache?")
-        print("- Fix: Was wurde gemacht?")
-        print("- Regression Test: Wie verhindert man es künftig?")
-        print("- Prevention Rule: Neue Guardrail?")
+        print("- Symptom: What went wrong?")
+        print("- Root Cause: Why did it happen?")
+        print("- Fix: How was it resolved?")
+        print("- Regression Test: How to prevent recurrence?")
+        print("- Prevention Rule: New guardrail?")
         sys.exit(0)
 
 if __name__ == "__main__":
     main()
-
